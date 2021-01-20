@@ -80,7 +80,7 @@ def test_bert():
 
     # loss
     aff_criterion = nn.BCEWithLogitsLoss()
-    mass_criterion = nn.BCEWithLogitsLoss()
+    mass_criterion = nn.BCEWithLogitsLoss(reduction='none')
     alpha = 0.5
 
     optimizer = optim.Adam(model.parameters(), lr=0.001)

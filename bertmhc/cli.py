@@ -174,8 +174,6 @@ def train_bertmhc(args):
     ################
     # Load model
     ################
-    device = torch.device(device)
-
     if args.random_init:
         config = ProteinBertConfig.from_pretrained('bert-base')
         model = BERTMHC(config)
@@ -255,6 +253,10 @@ def predict(args):
     inp = args.data
     config = ProteinBertConfig.from_pretrained('bert-base')
     model = BERTMHC(config)
+    weights = torch.load(args.model)
+    if list(weights.keys())[0].startswith('module.'):
+        weights = {k[7:]: v for k, v in weights.items() if k.startswith('module.')}
+    model.load_state_dict(weights)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
     valset = BertDataset(inp,

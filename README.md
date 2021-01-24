@@ -2,6 +2,9 @@
 
 Predict peptide MHC binding and presentation with BERT model.
 
+## Licence
+The code is only allowed for accedemic research. Commercial usage/research is not granted. Before using the code, please make sure you read and agree with the [Licence](https://github.com/s6juncheng/BERTMHC/blob/master/LICENSE)
+
 ## Installation
 The package can be installed with ``pip``. In the root directory of this repo:
 

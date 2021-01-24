@@ -1,3 +1,5 @@
+**Please note that we only support for non-commercial use, see the [Licence](https://github.com/s6juncheng/BERTMHC/blob/master/LICENSE)**
+
 * BERTMHC version:
 * Python version:
 * Operating System:

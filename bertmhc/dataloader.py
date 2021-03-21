@@ -68,6 +68,12 @@ class CSVDataset(Dataset):
         if not train:
             data['label'] = np.nan
             data['masslabel'] = np.nan
+        if 'masslabel' not in data and 'label' not in data:
+            raise ValueError("missing label.")
+        if 'masslabel' not in data:
+            data['masslabel'] = np.nan
+        if 'label' not in data:
+            data['label'] = np.nan
         self.targets = np.stack([data['label'], data['masslabel']], axis=1)
         self.data = data
         if 'instance_weights' in data:

@@ -23,7 +23,7 @@ An example input data format is provided in ``tests/data/{train,eval}.csv``.
 
 ### Training the binding model
 To train a binding model, it is important to set `--alpha 0`.
-The required columns are `[allele, mhc, peptide, label]`.
+See example input file ``tests/data/train.csv``. The required columns are `[allele, mhc, peptide, label]`.
 
 ```
 bertmhc train --lr 0.15 --batch_size 64 --alpha 0 --wd 0.0
@@ -70,7 +70,7 @@ bertmhc train --lr 0.001 --batch_size 64 --alpha 0 --wd 0.0001 --deconvolution T
 (distinguished by the `MA` column in the input data).
 
 ## Prediction
-After model training, to predict with trained models, use `bertmhc predict`.
+After model training, to predict with trained models, use `bertmhc predict`. The required columns are `[allele, mhc, peptide]`.
 ```
 bertmhc predict --data <test.csv.gz>
 --model <trained_model.pt>
@@ -85,3 +85,6 @@ We provide a webserver to run our trained models described in the paper.
 To use the webserver, please read and accept the terms of use.
 
 https://bertmhc.privacy.nlehd.de/
+
+At the moment the webserver is running with limited resource, therefore we have to limit the use (frequency of queries, input data size, etc.).
+Please try again later if it does not work temporarily. We are preparing a more powerful GPU server to improve this.

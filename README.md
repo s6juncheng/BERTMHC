@@ -86,5 +86,4 @@ To use the webserver, please read and accept the terms of use.
 
 https://bertmhc.privacy.nlehd.de/
 
-At the moment the webserver is running with limited resource, therefore we have to limit the use (frequency of queries, input data size, etc.).
-Please try again later if it does not work temporarily. We are preparing a more powerful GPU server to improve this.
+You can submit maximum of 5k peptides for each query. The server might return error when overloaded. Please try again later if it does not work temporarily. Please feel free to open a github issue if you think the server is not running properly. 

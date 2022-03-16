@@ -295,8 +295,8 @@ def train(model, optimizer, train_data, device, aff_criterion, mass_criterion, a
         optimizer.zero_grad()
         logits, targets = model(**batch)
 
-        label_valid = (targets[:, 0] != -1)
-        mass_valid = (targets[:, 1] != -1)
+        label_valid = ~torch.isnan(targets[:, 0])
+        mass_valid = ~torch.isnan(targets[:, 1])
         if torch.sum(label_valid) > 0:
             aff_loss = aff_criterion(logits[label_valid, 0], targets[label_valid, 0])
         else:
@@ -338,8 +338,8 @@ def evaluate(model, val_data, device, aff_criterion, mass_criterion, alpha):
                                          torch.ones(batch['targets'].shape[0], ).to(device))
             logits, targets = model(**batch)
 
-            label_valid = (targets[:, 0] != -1)
-            mass_valid = (targets[:, 1] != -1)
+            label_valid = ~torch.isnan(targets[:, 0])
+            mass_valid = ~torch.isnan(targets[:, 1])
             if torch.sum(label_valid) > 0:
                 aff_loss = aff_criterion(logits[label_valid, 0], targets[label_valid, 0]).item()
             else:
@@ -364,8 +364,9 @@ def evaluate(model, val_data, device, aff_criterion, mass_criterion, alpha):
     mass_pred = np.concatenate(mass_pred)
     label_np = np.concatenate(label_np)
     masslabel_np = np.concatenate(masslabel_np)
-    label_valid = (label_np != -1)
-    mass_valid = (masslabel_np != -1)
+
+    label_valid = ~np.isnan(label_np)
+    mass_valid = ~np.isnan(masslabel_np)
     ret['val_cor'] = kendalltau(aff_pred[label_valid], label_np[label_valid])[0]
     label_bin = (label_np > 0.426).astype(float)[label_valid]
     try:
@@ -378,8 +379,11 @@ def evaluate(model, val_data, device, aff_criterion, mass_criterion, alpha):
         ret['val_ap'] = np.nan
     if 'MA' in val_data.dataset.data.data:
         sa = ~val_data.dataset.data.data['MA']
-        mass_valid = (masslabel_np != -1) & sa
-        ret['val_ap_sa'] = average_precision_score(masslabel_np[mass_valid], mass_pred[mass_valid])
+        mass_valid = ~np.isnan(masslabel_np) & sa
+        try:
+            ret['val_ap_sa'] = average_precision_score(masslabel_np[mass_valid], mass_pred[mass_valid])
+        except:
+            ret['val_ap_sa'] = np.nan
     try:
         ret['val_mass_auc'] = roc_auc_score(masslabel_np[mass_valid], mass_pred[mass_valid])
     except:
